@@ -19,7 +19,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore({ mongooseConnection: mongoose.connection }),
+    store: MongoStore.create({ mongooseConnection: mongoose.connection }),
   })
 );
 
