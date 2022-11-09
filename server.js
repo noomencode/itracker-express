@@ -14,13 +14,14 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+app.set("trust proxy", 1);
 app.use(
   cors({
     origin: "https://investenzo.onrender.com",
     credentials: true,
   })
 );
-app.set("trust proxy", 1);
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
