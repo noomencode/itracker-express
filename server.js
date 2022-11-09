@@ -10,8 +10,6 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 
-const MongoStore = connectMongo(session);
-
 connectDB();
 
 const app = express();
