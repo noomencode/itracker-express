@@ -1,5 +1,6 @@
 import express from "express";
 import connectDB from "./config/db.js";
+import mongoose from "mongoose";
 import assetRoutes from "./routes/assetRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
 import portfolioRoutes from "./routes/portfolioRoutes.js";
@@ -7,8 +8,9 @@ import userRoutes from "./routes/userRoutes.js";
 import { getQuotes } from "././controllers/assetController.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import session from "express-session";
+import connectMongo from "connect-mongo";
 
-const MongoStore = require("connect-mongo")(session);
+const MongoStore = connectMongo(session);
 
 connectDB();
 
