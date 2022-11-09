@@ -8,7 +8,7 @@ import userRoutes from "./routes/userRoutes.js";
 import { getQuotes } from "././controllers/assetController.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import session from "express-session";
-import connectMongo from "connect-mongo";
+import MongoStore from "connect-mongo";
 
 const MongoStore = connectMongo(session);
 
@@ -21,7 +21,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    store: MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
 
