@@ -17,8 +17,9 @@ app.use(express.json());
 app.use(cors());
 app.use(
   session({
+    cookie: { domain: "https://investenzo.onrender.com" },
     secret: process.env.SESSION_SECRET,
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   })
