@@ -13,7 +13,7 @@ import MongoStore from "connect-mongo";
 connectDB();
 
 const app = express();
-app.use(express.json());
+
 app.set("trust proxy", 1);
 app.use(
   cors({
@@ -21,6 +21,18 @@ app.use(
     credentials: true,
   })
 );
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "https://investenzo.onrender.com");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-HTTP-Method-Override, Set-Cookie, Cookie"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  next();
+});
+
+app.use(express.json());
 
 app.use(
   session({
