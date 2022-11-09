@@ -11,16 +11,13 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 
 connectDB();
-
 const app = express();
-app.use(express.json());
 
-app.use(
-  cors({
-    origin: "https://investenzo.onrender.com",
-    credentials: true,
-  })
+app.listen(
+  PORT,
+  console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`)
 );
+app.use(express.json());
 
 app.use(
   session({
@@ -30,15 +27,23 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
       sameSite: "none",
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       httpOnly: true,
     },
   })
 );
+app.enable("trust proxy");
 
-app.get("/", (req, res) => {
-  res.send("API RUNNING");
-});
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://investenzo.onrender.com",
+  })
+);
+
+// app.get("/", (req, res) => {
+//   res.send("API RUNNING");
+// });
 
 app.use("/api/portfolio", portfolioRoutes);
 app.use("/api/assets", assetRoutes);
@@ -52,8 +57,3 @@ const PORT = process.env.PORT || 5000;
 
 getQuotes();
 setInterval(getQuotes, 1200000);
-
-app.listen(
-  PORT,
-  console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`)
-);
