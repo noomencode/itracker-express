@@ -17,7 +17,8 @@ app.use(express.json());
 app.use(cors());
 app.use(
   session({
-    cookie: { domain: "https://investenzo.onrender.com" },
+    //cookie: { domain: "https://investenzo.onrender.com" },
+    proxy: true,
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
