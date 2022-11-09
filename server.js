@@ -1,6 +1,6 @@
 import express from "express";
 import connectDB from "./config/db.js";
-import mongoose from "mongoose";
+import cors from "cors";
 import assetRoutes from "./routes/assetRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
 import portfolioRoutes from "./routes/portfolioRoutes.js";
@@ -14,6 +14,7 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
