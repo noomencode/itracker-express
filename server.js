@@ -15,14 +15,17 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.set("trust proxy", 1);
 app.use(
   session({
-    //cookie: { domain: "https://investenzo.onrender.com" },
-    proxy: true,
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    cookie: {
+      sameSite: "none",
+      secure: true,
+    },
   })
 );
 
