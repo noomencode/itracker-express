@@ -1,5 +1,4 @@
 import express from "express";
-import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import assetRoutes from "./routes/assetRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
@@ -9,7 +8,7 @@ import { getQuotes } from "././controllers/assetController.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import session from "express-session";
 
-dotenv.config();
+const MongoStore = require("connect-mongo")(session);
 
 connectDB();
 
@@ -20,6 +19,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
 
