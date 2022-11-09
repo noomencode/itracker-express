@@ -13,16 +13,14 @@ import MongoStore from "connect-mongo";
 connectDB();
 
 const app = express();
+app.use(express.json());
 
 app.use(
   cors({
     origin: "https://investenzo.onrender.com",
-    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
     credentials: true,
   })
 );
-
-app.use(express.json());
 
 app.use(
   session({
@@ -31,7 +29,7 @@ app.use(
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
-      sameSite: false,
+      sameSite: "none",
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
     },
@@ -53,7 +51,6 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 getQuotes();
-//setInterval(getQuotes, 600000);
 setInterval(getQuotes, 1200000);
 
 app.listen(
