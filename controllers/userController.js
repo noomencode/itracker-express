@@ -52,13 +52,10 @@ const registerUser = asyncHandler(async (req, res) => {
   if (user) {
     req.session.user_id = user._id;
     res.status(201).json({
-      //_id: user._id,
       name: user.name,
       isAuthenticated: true,
-      // email: user.email,
-      //   isAdmin: user.isAdmin,
-      //   token: generateToken(user._id),
     });
+    res.send(req.session.user_id);
   } else {
     res.status(400);
     throw new Error("Invalid user data");

@@ -14,11 +14,11 @@ connectDB();
 
 const app = express();
 
-app.set("trust proxy", 1);
-
 app.use(
   cors({
     origin: "https://investenzo.onrender.com",
+    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+    credentials: true,
   })
 );
 
@@ -30,6 +30,11 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    cookie: {
+      sameSite: false,
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+    },
   })
 );
 
