@@ -51,6 +51,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (user) {
     req.session.user_id = user._id;
+    req.session.save();
+    res.header("Content-Type", "application/json");
     res.status(201).json({
       //_id: user._id,
       name: user.name,
