@@ -12,6 +12,7 @@ import MongoStore from "connect-mongo";
 
 connectDB();
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.listen(
   PORT,
@@ -52,8 +53,6 @@ app.use("/api/users", userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
-
-const PORT = process.env.PORT || 5000;
 
 getQuotes();
 setInterval(getQuotes, 1200000);
