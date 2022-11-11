@@ -28,6 +28,9 @@ const assetSchema = mongoose.Schema(
     trailingPE: {
       type: Number,
     },
+    top: {
+      type: Boolean,
+    },
   },
   {
     timestamps: true,

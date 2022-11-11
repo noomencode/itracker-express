@@ -12,6 +12,15 @@ const getAssets = asyncHandler(async (req, res) => {
   res.json(assets);
 });
 
+// @desc    Fetch top assets
+// @Route   GET /api/assets/top
+// @access  Public
+
+const getTopAssets = asyncHandler(async (req, res) => {
+  const assets = await Asset.find({ top: true });
+  res.json(assets);
+});
+
 // @desc    Fetch single asset
 // @Route   GET /api/assets/findById/:id
 // @access  Private
@@ -115,4 +124,11 @@ const getQuotes = async () => {
   });
 };
 
-export { getAssets, getAssetById, addAsset, deleteAsset, getQuotes };
+export {
+  getAssets,
+  getTopAssets,
+  getAssetById,
+  addAsset,
+  deleteAsset,
+  getQuotes,
+};
