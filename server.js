@@ -1,6 +1,7 @@
 import express from "express";
 import connectDB from "./config/db.js";
 import cors from "cors";
+import dotenv from "dotenv";
 import assetRoutes from "./routes/assetRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
 import portfolioRoutes from "./routes/portfolioRoutes.js";
@@ -9,6 +10,8 @@ import { getQuotes } from "././controllers/assetController.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+
+dotenv.config();
 
 connectDB();
 const app = express();
@@ -27,8 +30,8 @@ app.use(
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
-      sameSite: "none",
-      secure: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : true,
+      secure: process.env.NODE_ENV === "production" ? true : false,
       httpOnly: true,
     },
   })
@@ -38,7 +41,10 @@ app.enable("trust proxy");
 app.use(
   cors({
     credentials: true,
-    origin: "https://investenzo.onrender.com",
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://investenzo.onrender.com"
+        : "http://localhost:3000",
   })
 );
 
