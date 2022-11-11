@@ -55,4 +55,4 @@ app.use(notFound);
 app.use(errorHandler);
 
 getQuotes();
-setInterval(getQuotes, 1200000);
+setInterval(getQuotes, 300000);
