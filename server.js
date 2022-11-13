@@ -10,6 +10,7 @@ import { getQuotes } from "././controllers/assetController.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import yahooFinance from "yahoo-finance2";
 
 dotenv.config();
 

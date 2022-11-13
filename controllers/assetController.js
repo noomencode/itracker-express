@@ -124,11 +124,31 @@ const getQuotes = async () => {
   });
 };
 
+//// @desc  Search for asset
+// @Route   /api/assets/search
+// @access  Public
+
+const searchAssets = asyncHandler(async (req, res) => {
+  const { query } = req.body;
+  const result = await yahooFinance.search(query);
+  if (result) {
+    const resultFiltered = result.quotes.filter(
+      (x) => x.isYahooFinance === true
+    );
+    console.log(resultFiltered[0].shortname);
+    res.json(resultFiltered);
+  } else {
+    res.status(501);
+    throw new Error("Search did not give any results");
+  }
+});
+
 export {
   getAssets,
   getTopAssets,
   getAssetById,
   addAsset,
   deleteAsset,
+  searchAssets,
   getQuotes,
 };
