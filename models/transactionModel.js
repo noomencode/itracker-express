@@ -2,43 +2,32 @@ import mongoose from "mongoose";
 
 const transactionSchema = mongoose.Schema(
   {
-    account_id: {
+    portfolio: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
-      type: Number,
+      ref: "User",
     },
-    transaction_count: {
-      type: Number,
-    },
-    bucket_start_date: {
+    date: {
       type: Date,
+      required: true,
     },
-    bucket_end_date: {
-      type: Date,
+    asset: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Asset",
     },
-    transactions: [
-      {
-        date: {
-          required: true,
-          type: Date,
-        },
-        amount: {
-          required: true,
-          type: Number,
-        },
-        transaction_code: {
-          required: true,
-          type: String,
-        },
-        price: {
-          required: true,
-          type: String,
-        },
-        total: {
-          required: true,
-          type: String,
-        },
-      },
-    ],
+    type: {
+      type: String,
+      required: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,

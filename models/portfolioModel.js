@@ -31,6 +31,14 @@ const portfolioSchema = mongoose.Schema(
         },
       },
     ],
+    transactions: [
+      {
+        transaction: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Transaction",
+        },
+      },
+    ],
   },
   {
     timestamps: true,
