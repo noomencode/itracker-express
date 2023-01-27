@@ -24,6 +24,10 @@ const transactionSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    expense: {
+      type: Number,
+      required: true,
+    },
     price: {
       type: Number,
       required: true,

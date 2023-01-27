@@ -9,7 +9,7 @@ import Portfolio from "../models/portfolioModel.js";
 // @access  Private
 
 const addTransaction = asyncHandler(async (req, res) => {
-  const { ticker, date, type, amount, price } = req.body;
+  const { ticker, date, type, amount, price, expense } = req.body;
   const asset = await Asset.findOne({ ticker: ticker });
   const portfolio = await Portfolio.findOne({
     //user: user,
@@ -23,6 +23,7 @@ const addTransaction = asyncHandler(async (req, res) => {
       type: type,
       amount: amount,
       price: price,
+      expense: expense,
     });
     if (transaction) {
       portfolio.transactions.push({ transaction: transaction.id });
