@@ -85,6 +85,7 @@ const addAssetToPortfolio = asyncHandler(async (req, res) => {
   if (portfolio) {
     res.status(201);
     res.send(`Asset added to portfolio!`);
+    console.log(portfolio);
   } else {
     res.status(400);
     throw new Error("Invalid portfolio data");
@@ -119,9 +120,11 @@ const editPortfolioAsset = asyncHandler(async (req, res) => {
   asset.name = name;
   asset.spent = spent;
   asset.sharesAmount = sharesAmount;
+  //asset.save();
   portfolio.save(function (err) {
     if (err) return console.log(err);
     res.status(204).json(`Asset updated successfully`);
+    console.log(asset);
   });
 });
 

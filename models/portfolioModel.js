@@ -29,6 +29,8 @@ const portfolioSchema = mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Asset",
         },
+        createdAt: { type: Date, default: Date.now },
+        updatedAt: { type: Date, default: Date.now },
       },
     ],
     transactions: [

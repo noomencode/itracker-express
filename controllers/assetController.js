@@ -135,8 +135,12 @@ const searchAssets = asyncHandler(async (req, res) => {
     const resultFiltered = result.quotes.filter(
       (x) => x.isYahooFinance === true
     );
-    console.log(resultFiltered[0].shortname);
-    res.json(resultFiltered);
+    const resultArray = resultFiltered.map((res, index) => {
+      return { key: index, ...res };
+    });
+    //console.log(resultArray);
+    //console.log(resultFiltered[0].shortname);
+    res.json(resultArray);
   } else {
     res.status(501);
     throw new Error("Search did not give any results");
