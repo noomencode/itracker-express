@@ -9,6 +9,7 @@ const generateToken = (res, id) => {
     httpOnly: true,
     sameSite: "Lax",
     secure: process.env.NODE_ENV === "production" ? true : false,
+    domain: "onrender.com",
     //7 days expiry
     expires: new Date(Date.now() + 7 * 24 * 3600000),
   });
