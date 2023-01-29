@@ -6,13 +6,10 @@ const protect = async (req, res, next) => {
   const token = req.cookies.token || "";
   try {
     if (!token) {
-      return res.status(401).json("You need to Login");
+      return res.status(401).json("Not authorized, no token");
     }
-    const decrypt = await jwt.verify(token, process.env.JWT_SECRET);
-    req.user = {
-      id: decrypt.id,
-      firstname: decrypt.firstname,
-    };
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.id).select("-password");
     next();
   } catch (err) {
     return res.status(500).json(err.toString());
