@@ -1,6 +1,7 @@
 import express from "express";
 import connectDB from "./config/db.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import assetRoutes from "./routes/assetRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
@@ -24,19 +25,19 @@ app.listen(
 );
 app.use(express.json());
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-    cookie: {
-      sameSite: process.env.NODE_ENV === "production" ? "none" : true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
-      httpOnly: true,
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+//     cookie: {
+//       sameSite: process.env.NODE_ENV === "production" ? "none" : true,
+//       secure: process.env.NODE_ENV === "production" ? true : false,
+//       httpOnly: true,
+//     },
+//   })
+// );
 app.enable("trust proxy");
 
 app.use(
@@ -49,6 +50,7 @@ app.use(
   })
 );
 
+app.use(cookieParser());
 // app.get("/", (req, res) => {
 //   res.send("API RUNNING");
 // });

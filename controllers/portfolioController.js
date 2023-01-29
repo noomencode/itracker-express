@@ -8,9 +8,11 @@ import Portfolio from "../models/portfolioModel.js";
 // @access  Private
 
 const getPortfolio = asyncHandler(async (req, res) => {
-  if (req.session.user_id) {
+  if (req.user.id) {
+    //if (req.session.user_id) {
     const portfolio = await Portfolio.find({
-      user: req.session.user_id,
+      //user: req.session.user_id,
+      user: req.user.id,
     }).populate("assets.asset");
     if (portfolio[0].assets.length) {
       res.json(portfolio);
@@ -58,7 +60,8 @@ const createPortfolio = asyncHandler(async (req, res) => {
 const addAssetToPortfolio = asyncHandler(async (req, res) => {
   const { ticker, name, sharesAmount, spent } = req.body;
   const tickerExists = await Portfolio.findOne({
-    user: req.session.user_id,
+    //user: req.session.user_id,
+    user: req.user.id,
     assets: { ticker: ticker },
   });
   if (tickerExists) {
@@ -75,7 +78,8 @@ const addAssetToPortfolio = asyncHandler(async (req, res) => {
   };
 
   const portfolio = await Portfolio.findOneAndUpdate(
-    { user: req.session.user_id },
+    //{ user: req.session.user_id },
+    { user: req.user.id },
     {
       $push: {
         assets: newAsset,
@@ -115,7 +119,8 @@ const deleteAssetFromPortfolio = asyncHandler(async (req, res) => {
 
 const editPortfolioAsset = asyncHandler(async (req, res) => {
   const { name, spent, sharesAmount, id } = req.body;
-  const portfolio = await Portfolio.findOne({ user: req.session.user_id });
+  const portfolio = await Portfolio.findOne({ user: req.user.id });
+  //const portfolio = await Portfolio.findOne({ user: req.session.user_id });
   const asset = await portfolio.assets.id(req.params.id);
   asset.name = name;
   asset.spent = spent;

@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
+import generateToken from "../utils/generateToken.js";
 
 // @desc    Auth user & get token
 // @Route   POST /api/users/login
@@ -12,7 +13,13 @@ const authUser = asyncHandler(async (req, res) => {
   });
 
   if (user && (await user.matchPassword(password))) {
-    req.session.user_id = user._id;
+    //req.session.user_id = user._id;
+    generateToken(res, user._id);
+    // res.cookie("token", generateToken(user._id), {
+    //   maxAge: new Date(Date.now() + 100),
+    //   secure: false,
+    //   httpOnly: true,
+    // });
     res.json({
       //_id: user._id,
       name: user.name,
@@ -50,12 +57,14 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    req.session.user_id = user._id;
+    //req.session.user_id = user._id;
+    //await generateToken(res, user._id);
     res.status(201).json({
       name: user.name,
       isAuthenticated: true,
+      //token: await generateToken(res, user._id),
     });
-    res.send(req.session.user_id);
+    //res.send(req.session.user_id);
   } else {
     res.status(400);
     throw new Error("Invalid user data");

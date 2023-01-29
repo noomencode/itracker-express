@@ -42,4 +42,23 @@ const addTransaction = asyncHandler(async (req, res) => {
   }
 });
 
-export { addTransaction };
+// @desc    Get portfolio transactions
+// @Route   GET /api/transactions
+// @access  Private
+
+const getTransactions = asyncHandler(async (req, res) => {
+  if (req.session.user_id) {
+    const portfolio = await Portfolio.find({
+      user: req.session.user_id,
+    }).populate("transactions.transaction");
+    if (portfolio[0].transactions.length) {
+      res.json(portfolio.transactions);
+    } else {
+      res.status(400).json("No transactions found for user.");
+    }
+  } else {
+    res.status(401).json("Not allowed.");
+  }
+});
+
+export { addTransaction, getTransactions };
