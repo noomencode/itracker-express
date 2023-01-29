@@ -25,19 +25,19 @@ app.listen(
 );
 app.use(express.json());
 
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: false,
-//     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-//     cookie: {
-//       sameSite: process.env.NODE_ENV === "production" ? "none" : true,
-//       secure: process.env.NODE_ENV === "production" ? true : false,
-//       httpOnly: true,
-//     },
-//   })
-// );
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    cookie: {
+      sameSite: process.env.NODE_ENV === "production" ? "none" : true,
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      httpOnly: true,
+    },
+  })
+);
 app.enable("trust proxy");
 
 app.use(
