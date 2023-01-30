@@ -50,7 +50,7 @@ app.use(
   })
 );
 
-app.use(cookieParser());
+//app.use(cookieParser());
 // app.get("/", (req, res) => {
 //   res.send("API RUNNING");
 // });

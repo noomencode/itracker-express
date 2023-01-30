@@ -13,20 +13,12 @@ const authUser = asyncHandler(async (req, res) => {
   });
 
   if (user && (await user.matchPassword(password))) {
-    //req.session.user_id = user._id;
-    generateToken(res, user._id);
-    // res.cookie("token", generateToken(user._id), {
-    //   maxAge: new Date(Date.now() + 100),
-    //   secure: false,
-    //   httpOnly: true,
-    // });
+    //generateToken(res, user._id);
     res.json({
       //_id: user._id,
       name: user.name,
       isAuthenticated: true,
-      // email: user.email,
-      //isAdmin: user.isAdmin,
-      //token: generateToken(user._id),
+      token: generateToken(user._id),
     });
   } else {
     res.status(401);
@@ -62,7 +54,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       name: user.name,
       isAuthenticated: true,
-      //token: await generateToken(res, user._id),
+      token: generateToken(user._id),
     });
     //res.send(req.session.user_id);
   } else {
