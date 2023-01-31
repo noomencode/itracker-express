@@ -12,8 +12,8 @@ const addTransaction = asyncHandler(async (req, res) => {
   const { ticker, date, type, amount, price, expense } = req.body;
   const asset = await Asset.findOne({ ticker: ticker });
   const portfolio = await Portfolio.findOne({
-    //user: user,
-    user: req.session.user_id,
+    user: req.user.id,
+    //user: req.session.user_id,
   });
   if (asset && portfolio) {
     const transaction = await Transaction.create({

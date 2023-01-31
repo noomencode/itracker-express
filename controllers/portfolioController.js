@@ -102,7 +102,7 @@ const addAssetToPortfolio = asyncHandler(async (req, res) => {
 
 const deleteAssetFromPortfolio = asyncHandler(async (req, res) => {
   const { selected } = req.body;
-  const portfolio = await Portfolio.findOne({ user: req.session.user_id });
+  const portfolio = await Portfolio.findOne({ user: req.user.id });
   selected.forEach(async (a) => {
     const asset = await portfolio.assets.id(a.id);
     await asset.remove();
@@ -114,7 +114,7 @@ const deleteAssetFromPortfolio = asyncHandler(async (req, res) => {
 });
 
 // @desc    Edit asset in portfolio
-// @Route   DELETE /api/portfolio/assets/:id
+// @Route   PUT /api/portfolio/assets/:id
 // @access  Private
 
 const editPortfolioAsset = asyncHandler(async (req, res) => {
