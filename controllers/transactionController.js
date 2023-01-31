@@ -47,9 +47,9 @@ const addTransaction = asyncHandler(async (req, res) => {
 // @access  Private
 
 const getTransactions = asyncHandler(async (req, res) => {
-  if (req.session.user_id) {
+  if (req.user.id) {
     const portfolio = await Portfolio.find({
-      user: req.session.user_id,
+      user: req.user.id,
     }).populate("transactions.transaction");
     if (portfolio[0].transactions.length) {
       res.json(portfolio.transactions);
