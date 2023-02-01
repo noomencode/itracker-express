@@ -51,8 +51,9 @@ const getTransactions = asyncHandler(async (req, res) => {
     const portfolio = await Portfolio.find({
       user: req.user.id,
     }).populate("transactions.transaction");
+    // .populate("transactions.transaction.asset");
     if (portfolio[0].transactions.length) {
-      res.json(portfolio.transactions);
+      res.json(portfolio[0].transactions);
     } else {
       res.status(400).json("No transactions found for user.");
     }
