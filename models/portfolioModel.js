@@ -8,6 +8,25 @@ const portfolioSchema = mongoose.Schema(
       ref: "User",
       unique: true,
     },
+    history: [
+      {
+        date: {
+          type: Date,
+          required: true,
+        },
+        worth: {
+          type: Number,
+          required: true,
+        },
+        expenses: {
+          type: Number,
+          required: true,
+        },
+        yield: {
+          type: Number,
+        },
+      },
+    ],
     assets: [
       {
         name: {

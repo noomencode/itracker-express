@@ -9,9 +9,7 @@ import Portfolio from "../models/portfolioModel.js";
 
 const getPortfolio = asyncHandler(async (req, res) => {
   if (req.user.id) {
-    //if (req.session.user_id) {
     const portfolio = await Portfolio.find({
-      //user: req.session.user_id,
       user: req.user.id,
     }).populate("assets.asset");
     if (portfolio[0].assets.length) {
@@ -51,6 +49,22 @@ const createPortfolio = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Invalid portfolio data");
   }
+});
+
+// @desc    Add historic values about portfolio performance
+// @Route   PUT /api/portfolio
+// @access  Private
+
+const addPerformanceHistory = asyncHandler(async (req, res) => {
+  const { date, worth, expenses } = req.body;
+  const portfolio = await Portfolio.findOne({ user: req.user.id });
+  const history = { date: date, worth: worth, expenses: expenses };
+  portfolio.history.push(history);
+  portfolio.save(function (err) {
+    if (err) return console.log(err);
+    res.status(204).json(`Performance history added to portfolio.`);
+    console.log(portfolio);
+  });
 });
 
 // @desc    Add asset to portfolio
@@ -135,6 +149,7 @@ const editPortfolioAsset = asyncHandler(async (req, res) => {
 
 export {
   createPortfolio,
+  addPerformanceHistory,
   addAssetToPortfolio,
   getPortfolio,
   deleteAssetFromPortfolio,

@@ -47,13 +47,27 @@ const addTransaction = asyncHandler(async (req, res) => {
 // @access  Private
 
 const getTransactions = asyncHandler(async (req, res) => {
+  // if (req.user.id) {
+  //   const portfolio = await Portfolio.find({
+  //     user: req.user.id,
+  //   }).populate("transactions.transaction");
+  //   if (portfolio[0].transactions.length) {
+  //     res.json(portfolio[0].transactions);
+  //   } else {
+  //     res.status(400).json("No transactions found for user.");
+  //   }
+  // } else {
+  //   res.status(401).json("Not allowed.");
+  // }
   if (req.user.id) {
-    const portfolio = await Portfolio.find({
+    const portfolio = await Portfolio.findOne({
       user: req.user.id,
-    }).populate("transactions.transaction");
-    // .populate("transactions.transaction.asset");
-    if (portfolio[0].transactions.length) {
-      res.json(portfolio[0].transactions);
+    });
+    if (portfolio) {
+      const transactions = await Transaction.find({
+        portfolio: portfolio.id,
+      }).populate("asset");
+      res.json(transactions);
     } else {
       res.status(400).json("No transactions found for user.");
     }
