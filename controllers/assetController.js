@@ -1,6 +1,5 @@
 import asyncHandler from "express-async-handler";
 import Asset from "../models/assetModel.js";
-import AssetInfo from "../models/assetInfoModel.js";
 import yahooFinance from "yahoo-finance2";
 
 // @desc    Fetch all assets
