@@ -28,6 +28,18 @@ const assetSchema = mongoose.Schema(
     trailingPE: {
       type: Number,
     },
+    forwardPE: {
+      type: Number,
+    },
+    bookValue: {
+      type: Number,
+    },
+    trailingAnnualDividendYield: {
+      type: Number,
+    },
+    averageAnalystRating: {
+      type: String,
+    },
     top: {
       type: Boolean,
     },

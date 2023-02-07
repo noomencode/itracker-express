@@ -87,7 +87,6 @@ const getQuotes = async () => {
   const assets = await Asset.find({});
 
   assets.map(async (asset) => {
-    //let result;
     try {
       const result = await yahooFinance.quote(asset.ticker);
       if (result.currency === "SEK") {
@@ -105,6 +104,11 @@ const getQuotes = async () => {
           fiftyTwoWeekHigh: result.fiftyTwoWeekHigh,
           priceToBook: result.priceToBook,
           trailingPE: result.trailingPE,
+          forwardPE: result.forwardPE,
+          bookValue: result.bookValue,
+          trailingAnnualDividendYield: result.trailingAnnualDividendYield,
+          dividendDate: result.dividendDate,
+          averageAnalystRating: result.averageAnalystRating,
         }
       );
       if (updatedItem) {
