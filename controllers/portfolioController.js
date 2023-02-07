@@ -56,9 +56,17 @@ const createPortfolio = asyncHandler(async (req, res) => {
 // @access  Private
 
 const addPerformanceHistory = asyncHandler(async (req, res) => {
-  const { date, worth, expenses } = req.body;
+  const { date, worth, expenses, portfolioYield, dividends, realProfit } =
+    req.body;
   const portfolio = await Portfolio.findOne({ user: req.user.id });
-  const history = { date: date, worth: worth, expenses: expenses };
+  const history = {
+    date: date,
+    worth: worth,
+    expenses: expenses,
+    yield: portfolioYield,
+    dividends: dividends,
+    realProfit: realProfit,
+  };
   portfolio.history.push(history);
   portfolio.save(function (err) {
     if (err) return console.log(err);
