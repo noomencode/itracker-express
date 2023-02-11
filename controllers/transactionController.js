@@ -30,7 +30,6 @@ const addTransaction = asyncHandler(async (req, res) => {
       portfolio.save(() => {
         res.status(201);
         res.send("Transaction successfully added to portfolio.");
-        console.log(transaction);
       });
     } else {
       res.status(400);

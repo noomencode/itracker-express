@@ -89,16 +89,34 @@ const getQuotes = async () => {
   assets.map(async (asset) => {
     try {
       const result = await yahooFinance.quote(asset.ticker);
+
       if (result.currency === "SEK") {
         const sek_rate = await yahooFinance.quote("SEKEUR=X");
         result.regularMarketPrice = (
           result.regularMarketPrice * sek_rate.regularMarketPrice
         ).toFixed(2);
       }
+      const region = (result) => {
+        if (
+          result.exchange === "TAL" ||
+          result.exchange === "LIT" ||
+          result.exchange === "LAT"
+        ) {
+          return "Baltics";
+        } else if (result.currency === "USD") {
+          return "USA";
+        } else {
+          return "Europe";
+        }
+      };
       const updatedItem = await Asset.findOneAndUpdate(
         { ticker: asset.ticker },
         {
           price: result.regularMarketPrice,
+          type: result.typeDisp,
+          currency: result.currency,
+          exchange: result.exchange,
+          region: region(result),
           dailyChange: result.regularMarketChangePercent.toFixed(2),
           fiftyTwoWeekLow: result.fiftyTwoWeekLow,
           fiftyTwoWeekHigh: result.fiftyTwoWeekHigh,
@@ -113,7 +131,7 @@ const getQuotes = async () => {
       );
       if (updatedItem) {
         console.log(
-          `${asset.ticker} updated! New price ${result.regularMarketPrice}`
+          `${asset.ticker} updated! New price ${result.regularMarketPrice}, type: ${result.exchange}`
         );
       } else {
         console.log("Invalid asset data");

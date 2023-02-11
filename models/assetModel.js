@@ -10,6 +10,18 @@ const assetSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+    },
+    currency: {
+      type: String,
+    },
+    exchange: {
+      type: String,
+    },
+    region: {
+      type: String,
+    },
     price: {
       type: Number,
     },

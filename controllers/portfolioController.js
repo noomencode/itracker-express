@@ -111,7 +111,7 @@ const addAssetToPortfolio = asyncHandler(async (req, res) => {
   if (portfolio) {
     res.status(201);
     res.send(`Asset added to portfolio!`);
-    console.log(portfolio);
+    //console.log(portfolio);
   } else {
     res.status(400);
     throw new Error("Invalid portfolio data");
