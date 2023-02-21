@@ -103,7 +103,11 @@ const getQuotes = async () => {
           result.exchange === "LAT"
         ) {
           return "Baltics";
-        } else if (result.currency === "USD") {
+        } else if (
+          result.currency === "USD" ||
+          result.shortName?.includes("USA") ||
+          result.longName?.includes("USA")
+        ) {
           return "USA";
         } else {
           return "Europe";
