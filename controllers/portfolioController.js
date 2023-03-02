@@ -80,7 +80,7 @@ const addPerformanceHistory = asyncHandler(async (req, res) => {
 // @access  Private
 
 const addAssetToPortfolio = asyncHandler(async (req, res) => {
-  const { ticker, name, sharesAmount, spent } = req.body;
+  const { ticker, name, sharesAmount, spent, customType } = req.body;
   const tickerExists = await Portfolio.findOne({
     //user: req.session.user_id,
     user: req.user.id,
@@ -96,6 +96,7 @@ const addAssetToPortfolio = asyncHandler(async (req, res) => {
     name: name,
     sharesAmount: sharesAmount,
     spent: spent,
+    customType: customType,
     asset: assetId,
   };
 
@@ -140,14 +141,14 @@ const deleteAssetFromPortfolio = asyncHandler(async (req, res) => {
 // @access  Private
 
 const editPortfolioAsset = asyncHandler(async (req, res) => {
-  const { name, spent, sharesAmount, id } = req.body;
+  const { name, spent, sharesAmount, customType } = req.body;
   const portfolio = await Portfolio.findOne({ user: req.user.id });
-  //const portfolio = await Portfolio.findOne({ user: req.session.user_id });
   const asset = await portfolio.assets.id(req.params.id);
   asset.name = name;
   asset.spent = spent;
   asset.sharesAmount = sharesAmount;
-  //asset.save();
+  asset.customType = customType;
+
   portfolio.save(function (err) {
     if (err) return console.log(err);
     res.status(204).json(`Asset updated successfully`);

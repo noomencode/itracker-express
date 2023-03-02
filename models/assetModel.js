@@ -13,6 +13,9 @@ const assetSchema = mongoose.Schema(
     type: {
       type: String,
     },
+    customType: {
+      type: String,
+    },
     currency: {
       type: String,
     },
