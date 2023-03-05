@@ -82,7 +82,6 @@ const addPerformanceHistory = asyncHandler(async (req, res) => {
 const addAssetToPortfolio = asyncHandler(async (req, res) => {
   const { ticker, name, sharesAmount, spent, customType } = req.body;
   const tickerExists = await Portfolio.findOne({
-    //user: req.session.user_id,
     user: req.user.id,
     assets: { ticker: ticker },
   });
