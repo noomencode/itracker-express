@@ -12,8 +12,12 @@ const getPortfolio = asyncHandler(async (req, res) => {
     const portfolio = await Portfolio.find({
       user: req.user.id,
     }).populate("assets.asset");
-    if (portfolio[0].assets.length) {
-      res.json(portfolio);
+    if (portfolio) {
+      if (portfolio[0].assets.length) {
+        res.json(portfolio);
+      } else {
+        res.status(400).json("No assets found for user.");
+      }
     } else {
       res.status(400).json("No portfolio found for user.");
     }
@@ -112,7 +116,6 @@ const addAssetToPortfolio = asyncHandler(async (req, res) => {
   if (portfolio) {
     res.status(201);
     res.send(`Asset added to portfolio!`);
-    //console.log(portfolio);
   } else {
     res.status(400);
     throw new Error("Invalid portfolio data");

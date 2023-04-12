@@ -55,11 +55,27 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       isAuthenticated: true,
       token: generateToken(user._id),
+      _id: user._id,
     });
-    //res.send(req.session.user_id);
   } else {
     res.status(400);
     throw new Error("Invalid user data");
+  }
+});
+
+// @desc    Change password
+// @Route   POST /api/users/changePassword
+// @access  Private
+
+const changePassword = asyncHandler(async (req, res) => {
+  const { email, oldPassword, newPassword } = req.body;
+  const user = await User.findOne({
+    email,
+  });
+
+  if (user && (await user.matchPassword(oldPassword))) {
+    user.password = newPassword;
+    user.save();
   }
 });
 
