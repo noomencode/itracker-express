@@ -68,14 +68,21 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Private
 
 const changePassword = asyncHandler(async (req, res) => {
-  const { email, oldPassword, newPassword } = req.body;
-  const user = await User.findOne({
-    email,
-  });
-
-  if (user && (await user.matchPassword(oldPassword))) {
-    user.password = newPassword;
-    user.save();
+  const { oldPassword, newPassword } = req.body;
+  const user = await User.findById(req.user.id);
+  try {
+    if (user && (await user.matchPassword(oldPassword))) {
+      user.password = newPassword;
+      await user.save();
+    } else {
+      return res.status(401).json({
+        message:
+          "Something went wrong. Please check if passwords were entered correctly.",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -99,4 +106,4 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, registerUser, getUserProfile };
+export { authUser, registerUser, changePassword, getUserProfile };
