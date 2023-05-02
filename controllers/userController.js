@@ -73,7 +73,11 @@ const changePassword = asyncHandler(async (req, res) => {
   try {
     if (user && (await user.matchPassword(oldPassword))) {
       user.password = newPassword;
-      await user.save();
+      await user.save(() => {
+        return res
+          .status(200)
+          .json({ message: "Password changed successfully." });
+      });
     } else {
       return res.status(401).json({
         message:
