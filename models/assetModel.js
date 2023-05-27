@@ -58,6 +58,15 @@ const assetSchema = mongoose.Schema(
     top: {
       type: Boolean,
     },
+    tradeable: {
+      type: Boolean,
+    },
+    regularMarketOpen: {
+      type: Number,
+    },
+    regularMarketPreviousClose: {
+      type: Number,
+    },
   },
   {
     timestamps: true,

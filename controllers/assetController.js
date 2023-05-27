@@ -95,6 +95,9 @@ const getQuotes = async () => {
         result.regularMarketPrice = (
           result.regularMarketPrice * sek_rate.regularMarketPrice
         ).toFixed(2);
+        result.regularMarketOpen = (
+          result.regularMarketOpen * sek_rate.regularMarketPrice
+        ).toFixed(2);
       }
       const region = (result) => {
         if (
@@ -131,6 +134,9 @@ const getQuotes = async () => {
           trailingAnnualDividendYield: result.trailingAnnualDividendYield,
           dividendDate: result.dividendDate,
           averageAnalystRating: result.averageAnalystRating,
+          regularMarketOpen: result.regularMarketOpen || null,
+          tradeable: result.tradeable || false,
+          regularMarketPreviousClose: result.regularMarketPreviousClose || null,
         }
       );
       if (updatedItem) {
