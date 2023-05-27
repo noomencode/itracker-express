@@ -124,7 +124,7 @@ const getQuotes = async () => {
           currency: result.currency,
           exchange: result.exchange,
           region: region(result),
-          dailyChange: result.regularMarketChangePercent.toFixed(2),
+          dailyChange: result.regularMarketChangePercent.toFixed(2) || 0,
           fiftyTwoWeekLow: result.fiftyTwoWeekLow,
           fiftyTwoWeekHigh: result.fiftyTwoWeekHigh,
           priceToBook: result.priceToBook,
@@ -135,7 +135,8 @@ const getQuotes = async () => {
           dividendDate: result.dividendDate,
           averageAnalystRating: result.averageAnalystRating,
           regularMarketOpen: result.regularMarketOpen || null,
-          tradeable: result.tradeable || false,
+          tradeable:
+            result.typeDisp === "Cryptocurrency" ? true : result.tradeable,
           regularMarketPreviousClose: result.regularMarketPreviousClose || null,
         }
       );
