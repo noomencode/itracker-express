@@ -89,6 +89,7 @@ const getQuotes = async () => {
   assets.map(async (asset) => {
     try {
       const result = await yahooFinance.quote(asset.ticker);
+      console.log(result);
 
       if (result.currency === "SEK") {
         const sek_rate = await yahooFinance.quote("SEKEUR=X");
@@ -97,6 +98,9 @@ const getQuotes = async () => {
         ).toFixed(2);
         result.regularMarketOpen = (
           result.regularMarketOpen * sek_rate.regularMarketPrice
+        ).toFixed(2);
+        result.regularMarketPreviousClose = (
+          result.regularMarketPreviousClose * sek_rate.regularMarketPrice
         ).toFixed(2);
       }
       const region = (result) => {
@@ -124,7 +128,7 @@ const getQuotes = async () => {
           currency: result.currency,
           exchange: result.exchange,
           region: region(result),
-          dailyChange: result.regularMarketChangePercent.toFixed(2) || 0,
+          dailyChange: result.regularMarketChangePercent,
           fiftyTwoWeekLow: result.fiftyTwoWeekLow,
           fiftyTwoWeekHigh: result.fiftyTwoWeekHigh,
           priceToBook: result.priceToBook,
@@ -137,6 +141,7 @@ const getQuotes = async () => {
           regularMarketOpen: result.regularMarketOpen || null,
           tradeable:
             result.typeDisp === "Cryptocurrency" ? true : result.tradeable,
+          marketState: result.marketState,
           regularMarketPreviousClose: result.regularMarketPreviousClose || null,
         }
       );
