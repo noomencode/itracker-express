@@ -146,10 +146,10 @@ const editPortfolioAsset = asyncHandler(async (req, res) => {
   const { name, spent, sharesAmount, customType } = req.body;
   const portfolio = await Portfolio.findOne({ user: req.user.id });
   const asset = await portfolio.assets.id(req.params.id);
-  asset.name = name;
-  asset.spent = spent;
-  asset.sharesAmount = sharesAmount;
-  asset.customType = customType;
+  asset.name = name ? name : asset.name;
+  asset.spent = spent ? spent : asset.spent;
+  asset.sharesAmount = sharesAmount ? sharesAmount : asset.sharesAmount;
+  asset.customType = customType ? customType : asset.customType;
 
   portfolio.save(function (err) {
     if (err) return console.log(err);
