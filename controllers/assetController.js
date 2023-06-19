@@ -89,7 +89,6 @@ const getQuotes = async () => {
   assets.map(async (asset) => {
     try {
       const result = await yahooFinance.quote(asset.ticker);
-      console.log(result);
 
       if (result.currency === "SEK") {
         const sek_rate = await yahooFinance.quote("SEKEUR=X");
@@ -143,11 +142,12 @@ const getQuotes = async () => {
             result.typeDisp === "Cryptocurrency" ? true : result.tradeable,
           marketState: result.marketState,
           regularMarketPreviousClose: result.regularMarketPreviousClose || null,
+          regularMarketTime: result.regularMarketTime,
         }
       );
       if (updatedItem) {
         console.log(
-          `${asset.ticker} updated! New price ${result.regularMarketPrice}, type: ${result.exchange}`
+          `${asset.ticker} updated! New price: ${result.regularMarketPrice}, previous day price: ${result.regularMarketPreviousClose}`
         );
       } else {
         console.log("Invalid asset data");

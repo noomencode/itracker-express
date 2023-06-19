@@ -70,6 +70,9 @@ const assetSchema = mongoose.Schema(
     regularMarketPreviousClose: {
       type: Number,
     },
+    regularMarketTime: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
