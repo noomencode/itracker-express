@@ -6,6 +6,7 @@ import assetRoutes from "./routes/assetRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
 import portfolioRoutes from "./routes/portfolioRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import watchlistRoutes from "./routes/watchlistRoutes.js";
 import { getQuotes } from "././controllers/assetController.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
@@ -34,6 +35,7 @@ app.use(
 );
 
 app.use("/api/portfolio", portfolioRoutes);
+app.use("/api/watchlist", watchlistRoutes);
 app.use("/api/assets", assetRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/users", userRoutes);
