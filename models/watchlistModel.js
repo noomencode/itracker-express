@@ -28,6 +28,9 @@ const watchlistSchema = mongoose.Schema(
         comment: {
           type: String,
         },
+        targetPrice: {
+          type: Number,
+        },
         createdAt: { type: Date, default: Date.now },
         updatedAt: { type: Date, default: Date.now },
       },

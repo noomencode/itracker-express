@@ -56,7 +56,7 @@ const createWatchlist = asyncHandler(async (req, res) => {
 // @access  Private
 
 const addAssetToWatchlist = asyncHandler(async (req, res) => {
-  const { ticker, name, customType } = req.body;
+  const { ticker, name, customType, comment, targetPrice } = req.body;
   const tickerExists = await Watchlist.findOne({
     user: req.user.id,
     assets: { ticker: ticker },
@@ -71,6 +71,8 @@ const addAssetToWatchlist = asyncHandler(async (req, res) => {
     name: name,
     customType: customType,
     asset: assetId,
+    comment: comment,
+    targetPrice: targetPrice,
   };
 
   const watchlist = await Watchlist.findOneAndUpdate(
