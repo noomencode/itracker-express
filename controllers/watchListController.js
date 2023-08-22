@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Asset from "../models/assetModel.js";
-import Watchlist from "../models/watchListModel.js";
+import Watchlist from "../models/watchlistModel.js";
 // @desc    Get current user's watchlist
 // @Route   GET /api/watchlist
 // @access  Private
