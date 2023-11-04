@@ -68,15 +68,35 @@ const getTransactions = asyncHandler(async (req, res) => {
 // @access  Private
 
 const deleteTransaction = asyncHandler(async (req, res) => {
+  // const { selected } = req.body;
+  // selected.forEach(async (t) => {
+  //   const transaction = await Transaction.findById(t.id);
+  //   if (transaction) {
+  //     await transaction.remove();
+  //     res.json({ message: "Transaction removed" });
+  //   } else {
+  //     res.status(404);
+  //     throw new Error("Transaction not found");
+  //   }
+  // });
   const { selected } = req.body;
-  selected.forEach(async (t) => {
-    const transaction = await Transaction.findOne({ user: t.id });
-    await transaction.remove();
-    transaction.save(function (err) {
-      if (err) return console.log(err);
-      res.status(204).json(`Transaction(s) deleted successfully.`);
-    });
+  const removalPromises = selected.map(async (t) => {
+    const transaction = await Transaction.findById(t.id);
+    if (transaction) {
+      await transaction.remove();
+    } else {
+      res.status(404);
+      throw new Error("Transaction not found");
+    }
   });
+
+  try {
+    await Promise.all(removalPromises);
+    res.json({ message: "Transactions removed" });
+  } catch (error) {
+    // Handle any errors that occurred during removal
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // @desc    Edit transaction
@@ -85,12 +105,10 @@ const deleteTransaction = asyncHandler(async (req, res) => {
 
 const editTransaction = asyncHandler(async (req, res) => {
   const { date, id, type, sharesAmount, price, expense } = req.body;
-  const transaction = await Watchlist.findOne({ id: id });
+  const transaction = await Transaction.findById(id);
   transaction.date = date ? date : transaction.date;
   transaction.type = type ? type : transaction.type;
-  transaction.sharesAmount = sharesAmount
-    ? sharesAmount
-    : transaction.sharesAmount;
+  transaction.amount = sharesAmount ? sharesAmount : transaction.amount;
   transaction.price = price ? price : transaction.price;
   transaction.expense = expense ? expense : transaction.expense;
 
