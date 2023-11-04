@@ -92,8 +92,8 @@ const addAssetToWatchlist = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Delete asset from portfolio
-// @Route   DELETE /api/portfolio/assets
+// @desc    Delete asset from watchlist
+// @Route   DELETE /api/watchlist/assets
 // @access  Private
 
 const deleteAssetFromWatchlist = asyncHandler(async (req, res) => {
@@ -109,17 +109,18 @@ const deleteAssetFromWatchlist = asyncHandler(async (req, res) => {
   });
 });
 
-// @desc    Edit asset in portfolio
-// @Route   PUT /api/portfolio/assets/:id
+// @desc    Edit asset in watchlist
+// @Route   PUT /api/watchlist/assets/:id
 // @access  Private
 
 const editWatchlistAsset = asyncHandler(async (req, res) => {
-  const { name, customType, comment } = req.body;
+  const { name, customType, comment, targetPrice } = req.body;
   const watchlist = await Watchlist.findOne({ user: req.user.id });
   const asset = await watchlist.assets.id(req.params.id);
   asset.name = name ? name : asset.name;
   asset.customType = customType ? customType : asset.customType;
   asset.comment = comment ? comment : asset.comment;
+  asset.targetPrice = targetPrice ? targetPrice : asset.targetPrice;
 
   watchlist.save(function (err) {
     if (err) return console.log(err);
