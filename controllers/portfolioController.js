@@ -87,8 +87,9 @@ const addAssetToPortfolio = asyncHandler(async (req, res) => {
   const { ticker, name, sharesAmount, spent, customType } = req.body;
   const tickerExists = await Portfolio.findOne({
     user: req.user.id,
-    assets: { ticker: ticker },
+    assets: { $elemMatch: { ticker: ticker } },
   });
+
   if (tickerExists) {
     return res.status(400).json("Asset already in portfolio");
   }
