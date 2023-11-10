@@ -30,7 +30,7 @@
     "express-async-handler": "^1.2.0",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.1.5",
+    "mongoose": "^6.11.3",
     "yahoo-finance2": "^2.4.1"
   },
   "devDependencies": {
