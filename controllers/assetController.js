@@ -79,6 +79,19 @@ const deleteAsset = asyncHandler(async (req, res) => {
   }
 });
 
+//// @desc  Get quote for asset
+// @Route   GET /api/assets/quote/:ticker
+// @access  Public
+
+const getSingleQuote = asyncHandler(async (req, res) => {
+  const quote = await yahooFinance.quote(req.params.ticker);
+  if (quote) {
+    res.json(quote);
+  } else {
+    res.status(404);
+  }
+});
+
 //// @desc  Get quotes for assets
 // @Route   Currently not a API route
 // @access  Private
@@ -101,6 +114,22 @@ const getQuotes = async () => {
         result.regularMarketPreviousClose = (
           result.regularMarketPreviousClose * sek_rate.regularMarketPrice
         ).toFixed(2);
+        result.priceInEur = result.regularMarketPrice;
+        result.regularMarketPreviousCloseInEur =
+          result.regularMarketPreviousClose;
+      } else if (result.currency === "USD") {
+        const usd_rate = await yahooFinance.quote("EUR=X");
+        result.priceInEur = (
+          result.regularMarketPrice * usd_rate.regularMarketPrice
+        ).toFixed(2);
+        result.regularMarketPreviousCloseInEur = (
+          result.regularMarketPreviousClose *
+          usd_rate.regularMarketPreviousClose
+        ).toFixed(2);
+      } else if (result.currency === "EUR") {
+        result.priceInEur = result.regularMarketPrice;
+        result.regularMarketPreviousCloseInEur =
+          result.regularMarketPreviousClose;
       }
       const region = (result) => {
         if (
@@ -123,6 +152,7 @@ const getQuotes = async () => {
         { ticker: asset.ticker },
         {
           price: result.regularMarketPrice,
+          priceInEur: result.priceInEur,
           type: result.typeDisp,
           currency: result.currency,
           exchange: result.exchange,
@@ -142,6 +172,8 @@ const getQuotes = async () => {
             result.typeDisp === "Cryptocurrency" ? true : result.tradeable,
           marketState: result.marketState,
           regularMarketPreviousClose: result.regularMarketPreviousClose || null,
+          regularMarketPreviousCloseInEur:
+            result.regularMarketPreviousCloseInEur,
           regularMarketTime: result.regularMarketTime,
         }
       );
@@ -175,12 +207,24 @@ const searchAssets = asyncHandler(async (req, res) => {
     const resultArray = resultFiltered.map((res, index) => {
       return { key: index, ...res };
     });
-    //console.log(resultArray);
-    //console.log(resultFiltered[0].shortname);
     res.json(resultArray);
   } else {
     res.status(501);
     throw new Error("Search did not give any results");
+  }
+});
+
+//// @desc  Get currency rates
+// @Route   /api/assets/currency/:ticker
+// @access  Public
+
+const getCurrencyRate = asyncHandler(async (req, res) => {
+  const asset = await Asset.findOne({ ticker: req.params.ticker });
+  if (asset) {
+    res.json(asset);
+  } else {
+    res.status(404);
+    throw new Error("Asset not found");
   }
 });
 
@@ -192,4 +236,6 @@ export {
   deleteAsset,
   searchAssets,
   getQuotes,
+  getSingleQuote,
+  getCurrencyRate,
 };

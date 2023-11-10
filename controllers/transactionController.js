@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import Asset from "../models/assetModel.js";
 import Transaction from "../models/transactionModel.js";
 import Portfolio from "../models/portfolioModel.js";
+import yahooFinance from "yahoo-finance2";
 
 // @desc    Add new transaction
 // @Route   PUT /api/transactions
@@ -10,6 +11,9 @@ import Portfolio from "../models/portfolioModel.js";
 
 const addTransaction = asyncHandler(async (req, res) => {
   const { ticker, date, type, amount, price, expense } = req.body;
+  const usd_rate = await yahooFinance.quote("EUR=X");
+  const getTicker = await yahooFinance.quote(ticker);
+  const tickerCurrency = getTicker.currency;
   const asset = await Asset.findOne({ ticker: ticker });
   const portfolio = await Portfolio.findOne({
     user: req.user.id,
@@ -24,6 +28,7 @@ const addTransaction = asyncHandler(async (req, res) => {
       amount: amount,
       price: price,
       expense: expense,
+      expenseInEur: tickerCurrency === "USD" ? expense * usd_rate : expense,
     });
     if (transaction) {
       portfolio.transactions.push({ transaction: transaction.id });

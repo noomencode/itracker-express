@@ -9,6 +9,7 @@ import userRoutes from "./routes/userRoutes.js";
 import watchlistRoutes from "./routes/watchlistRoutes.js";
 import { getQuotes } from "././controllers/assetController.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+import { updateAsset } from "./scripts/updateItems.js";
 
 dotenv.config();
 
