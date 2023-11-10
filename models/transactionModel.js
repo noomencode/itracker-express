@@ -28,6 +28,9 @@ const transactionSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    expenseInEur: {
+      type: Number,
+    },
     price: {
       type: Number,
       required: true,

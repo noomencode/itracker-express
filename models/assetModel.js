@@ -28,6 +28,9 @@ const assetSchema = mongoose.Schema(
     price: {
       type: Number,
     },
+    priceInEur: {
+      type: Number,
+    },
     dailyChange: {
       type: Number,
     },
@@ -68,6 +71,9 @@ const assetSchema = mongoose.Schema(
       type: Number,
     },
     regularMarketPreviousClose: {
+      type: Number,
+    },
+    regularMarketPreviousCloseInEur: {
       type: Number,
     },
     regularMarketTime: {

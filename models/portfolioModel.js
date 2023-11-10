@@ -50,6 +50,9 @@ const portfolioSchema = mongoose.Schema(
         spent: {
           type: Number,
         },
+        spentInEur: {
+          type: Number,
+        },
         customType: {
           type: String,
         },
