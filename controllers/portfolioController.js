@@ -84,7 +84,8 @@ const addPerformanceHistory = asyncHandler(async (req, res) => {
 // @access  Private
 
 const addAssetToPortfolio = asyncHandler(async (req, res) => {
-  const { ticker, name, sharesAmount, spent, customType } = req.body;
+  const { ticker, name, sharesAmount, spent, spentInEur, customType } =
+    req.body;
   const tickerExists = await Portfolio.findOne({
     user: req.user.id,
     assets: { $elemMatch: { ticker: ticker } },
@@ -100,6 +101,7 @@ const addAssetToPortfolio = asyncHandler(async (req, res) => {
     name: name,
     sharesAmount: sharesAmount,
     spent: spent,
+    spentInEur: spentInEur,
     customType: customType,
     asset: assetId,
   };
@@ -144,11 +146,12 @@ const deleteAssetFromPortfolio = asyncHandler(async (req, res) => {
 // @access  Private
 
 const editPortfolioAsset = asyncHandler(async (req, res) => {
-  const { name, spent, sharesAmount, customType } = req.body;
+  const { name, spent, spentInEur, sharesAmount, customType } = req.body;
   const portfolio = await Portfolio.findOne({ user: req.user.id });
   const asset = await portfolio.assets.id(req.params.id);
   asset.name = name ? name : asset.name;
   asset.spent = spent ? spent : asset.spent;
+  asset.spentInEur = spentInEur ? spentInEur : asset.spentInEur;
   asset.sharesAmount = sharesAmount ? sharesAmount : asset.sharesAmount;
   asset.customType = customType ? customType : asset.customType;
 

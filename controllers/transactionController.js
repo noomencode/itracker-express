@@ -10,10 +10,7 @@ import yahooFinance from "yahoo-finance2";
 // @access  Private
 
 const addTransaction = asyncHandler(async (req, res) => {
-  const { ticker, date, type, amount, price, expense } = req.body;
-  const usd_rate = await yahooFinance.quote("EUR=X");
-  const getTicker = await yahooFinance.quote(ticker);
-  const tickerCurrency = getTicker.currency;
+  const { ticker, date, type, amount, price, expense, expenseInEur } = req.body;
   const asset = await Asset.findOne({ ticker: ticker });
   const portfolio = await Portfolio.findOne({
     user: req.user.id,
@@ -28,7 +25,7 @@ const addTransaction = asyncHandler(async (req, res) => {
       amount: amount,
       price: price,
       expense: expense,
-      expenseInEur: tickerCurrency === "USD" ? expense * usd_rate : expense,
+      expenseInEur: expenseInEur,
     });
     if (transaction) {
       portfolio.transactions.push({ transaction: transaction.id });
@@ -109,13 +106,17 @@ const deleteTransaction = asyncHandler(async (req, res) => {
 // @access  Private
 
 const editTransaction = asyncHandler(async (req, res) => {
-  const { date, id, type, sharesAmount, price, expense } = req.body;
+  const { date, id, type, sharesAmount, price, expense, expenseInEur } =
+    req.body;
   const transaction = await Transaction.findById(id);
   transaction.date = date ? date : transaction.date;
   transaction.type = type ? type : transaction.type;
   transaction.amount = sharesAmount ? sharesAmount : transaction.amount;
   transaction.price = price ? price : transaction.price;
   transaction.expense = expense ? expense : transaction.expense;
+  transaction.expenseInEur = expenseInEur
+    ? expenseInEur
+    : transaction.expenseInEur;
 
   transaction.save(function (err) {
     if (err) return console.log(err);
