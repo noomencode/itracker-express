@@ -10,6 +10,7 @@ import watchlistRoutes from "./routes/watchlistRoutes.js";
 import { getQuotes } from "././controllers/assetController.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import { updateAsset } from "./scripts/updateItems.js";
+import { addHistory } from "./scripts/addHistory.js";
 
 dotenv.config();
 
@@ -45,4 +46,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 getQuotes();
+addHistory();
 setInterval(getQuotes, 300000);

@@ -25,10 +25,19 @@ const portfolioSchema = mongoose.Schema(
         yield: {
           type: Number,
         },
+        annualYield: {
+          type: Number,
+        },
         dividends: {
           type: Number,
         },
-        realProfit: {
+        profit: {
+          type: Number,
+        },
+        profitWithDividends: {
+          type: Number,
+        },
+        yieldWithDividends: {
           type: Number,
         },
       },
