@@ -10,7 +10,7 @@ import watchlistRoutes from "./routes/watchlistRoutes.js";
 import { getQuotes } from "././controllers/assetController.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import { updateAsset } from "./scripts/updateItems.js";
-import { addHistory } from "./scripts/addHistory.js";
+import { addHistory, calculatePortfolio } from "./scripts/addHistory.js";
 
 dotenv.config();
 
@@ -45,6 +45,6 @@ app.use("/api/users", userRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-getQuotes();
-addHistory();
+// getQuotes();
+calculatePortfolio();
 setInterval(getQuotes, 300000);
