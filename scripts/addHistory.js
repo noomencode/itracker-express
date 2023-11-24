@@ -16,13 +16,11 @@ const calculatePortfolio = async (portfolio) => {
     }
   }
   portfolioYield = ((value - expense) / expense) * 100;
-  console.log(portfolioYield);
   if (p.history[0]) {
     annualYield =
       ((value - p.history[0]?.worth - (expense - p.history[0]?.expenses)) /
         p.history[0].worth) *
       100;
-    console.log(annualYield);
   }
   const profit = value - expense;
 
