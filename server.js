@@ -46,5 +46,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 // getQuotes();
-calculatePortfolio();
+addHistory();
 setInterval(getQuotes, 300000);

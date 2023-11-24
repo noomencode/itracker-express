@@ -14,6 +14,9 @@ const portfolioSchema = mongoose.Schema(
           type: Date,
           required: true,
         },
+        year: {
+          type: Number,
+        },
         worth: {
           type: Number,
           required: true,
