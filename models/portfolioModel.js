@@ -14,6 +14,9 @@ const portfolioSchema = mongoose.Schema(
           type: Date,
           required: true,
         },
+        year: {
+          type: Number,
+        },
         worth: {
           type: Number,
           required: true,
@@ -25,10 +28,19 @@ const portfolioSchema = mongoose.Schema(
         yield: {
           type: Number,
         },
+        annualYield: {
+          type: Number,
+        },
         dividends: {
           type: Number,
         },
-        realProfit: {
+        profit: {
+          type: Number,
+        },
+        profitWithDividends: {
+          type: Number,
+        },
+        yieldWithDividends: {
           type: Number,
         },
       },

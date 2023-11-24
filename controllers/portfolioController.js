@@ -69,7 +69,9 @@ const addPerformanceHistory = asyncHandler(async (req, res) => {
     expenses: expenses,
     yield: portfolioYield,
     dividends: dividends,
-    realProfit: realProfit,
+    profit: profit,
+    profitWithDividends: profitWithDividends,
+    yieldWithDividends: yieldWithDividends,
   };
   portfolio.history.push(history);
   portfolio.save(function (err) {
