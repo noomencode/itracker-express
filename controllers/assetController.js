@@ -120,13 +120,16 @@ const getQuotes = async () => {
         console.log(
           `${asset.ticker} updated! New price: ${result.regularMarketPrice}, previous day price: ${result.regularMarketPreviousClose}`
         );
+        res.status(200);
       } else {
         console.log("Invalid asset data");
+        res.status(500);
       }
     } catch (error) {
       console.warn(
         `Skipping yf.quote("${asset.ticker}"): [${error.name}] ${error.message}`
       );
+      res.status(503);
       return;
     }
   });
