@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Asset from "../models/assetModel.js";
 import yahooFinance from "yahoo-finance2";
+import { region, calculatePrices, assetItem } from "../utils/assetFunctions.js";
 
 // @desc    Fetch all assets
 // @Route   GET /api/assets
@@ -50,11 +51,17 @@ const addAsset = asyncHandler(async (req, res) => {
     return res.json(assetExists);
   }
 
-  const asset = await Asset.create({
-    ticker,
-    name,
-  });
+  const quote = await yahooFinance.quote(ticker);
+  const updatedQuotes = await calculatePrices(quote);
+  const newAsset = assetItem(updatedQuotes);
+  newAsset.ticker = ticker;
+  newAsset.name = name;
+  // const asset = await Asset.create({
+  //   ticker,
+  //   name,
+  // });
 
+  const asset = await Asset.create(newAsset);
   if (asset) {
     res.status(201);
     return res.json(asset);
@@ -102,80 +109,12 @@ const getQuotes = async () => {
   assets.map(async (asset) => {
     try {
       const result = await yahooFinance.quote(asset.ticker);
+      //Add price in EUR for USD and SEK assets.
+      const updatedResult = await calculatePrices(result);
 
-      if (result.currency === "SEK") {
-        const sek_rate = await yahooFinance.quote("SEKEUR=X");
-        result.regularMarketPrice = (
-          result.regularMarketPrice * sek_rate.regularMarketPrice
-        ).toFixed(2);
-        result.regularMarketOpen = (
-          result.regularMarketOpen * sek_rate.regularMarketPrice
-        ).toFixed(2);
-        result.regularMarketPreviousClose = (
-          result.regularMarketPreviousClose * sek_rate.regularMarketPrice
-        ).toFixed(2);
-        result.priceInEur = result.regularMarketPrice;
-        result.regularMarketPreviousCloseInEur =
-          result.regularMarketPreviousClose;
-      } else if (result.currency === "USD") {
-        const usd_rate = await yahooFinance.quote("EUR=X");
-        result.priceInEur = (
-          result.regularMarketPrice * usd_rate.regularMarketPrice
-        ).toFixed(2);
-        result.regularMarketPreviousCloseInEur = (
-          result.regularMarketPreviousClose *
-          usd_rate.regularMarketPreviousClose
-        ).toFixed(2);
-      } else if (result.currency === "EUR") {
-        result.priceInEur = result.regularMarketPrice;
-        result.regularMarketPreviousCloseInEur =
-          result.regularMarketPreviousClose;
-      }
-      const region = (result) => {
-        if (
-          result.exchange === "TAL" ||
-          result.exchange === "LIT" ||
-          result.exchange === "LAT"
-        ) {
-          return "Baltics";
-        } else if (
-          result.currency === "USD" ||
-          result.shortName?.includes("USA") ||
-          result.longName?.includes("USA")
-        ) {
-          return "USA";
-        } else {
-          return "Europe";
-        }
-      };
       const updatedItem = await Asset.findOneAndUpdate(
         { ticker: asset.ticker },
-        {
-          price: result.regularMarketPrice,
-          priceInEur: result.priceInEur,
-          type: result.typeDisp,
-          currency: result.currency,
-          exchange: result.exchange,
-          region: region(result),
-          dailyChange: result.regularMarketChangePercent,
-          fiftyTwoWeekLow: result.fiftyTwoWeekLow,
-          fiftyTwoWeekHigh: result.fiftyTwoWeekHigh,
-          priceToBook: result.priceToBook,
-          trailingPE: result.trailingPE,
-          forwardPE: result.forwardPE,
-          bookValue: result.bookValue,
-          trailingAnnualDividendYield: result.trailingAnnualDividendYield,
-          dividendDate: result.dividendDate,
-          averageAnalystRating: result.averageAnalystRating,
-          regularMarketOpen: result.regularMarketOpen || null,
-          tradeable:
-            result.typeDisp === "Cryptocurrency" ? true : result.tradeable,
-          marketState: result.marketState,
-          regularMarketPreviousClose: result.regularMarketPreviousClose || null,
-          regularMarketPreviousCloseInEur:
-            result.regularMarketPreviousCloseInEur,
-          regularMarketTime: result.regularMarketTime,
-        }
+        assetItem(updatedResult)
       );
       if (updatedItem) {
         console.log(
