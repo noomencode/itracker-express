@@ -103,7 +103,7 @@ const getSingleQuote = asyncHandler(async (req, res) => {
 // @Route   Currently not a API route
 // @access  Private
 
-const getQuotes = async () => {
+const getQuotes = asyncHandler(async (req, res) => {
   const assets = await Asset.find({});
 
   assets.map(async (asset) => {
@@ -133,7 +133,7 @@ const getQuotes = async () => {
       return;
     }
   });
-};
+});
 
 //// @desc  Search for asset
 // @Route   /api/assets/search
