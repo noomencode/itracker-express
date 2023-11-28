@@ -8,12 +8,14 @@ import {
   searchAssets,
   getCurrencyRate,
   getSingleQuote,
+  getQuotes,
 } from "../controllers/assetController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.route("/").get(getAssets);
+router.route("/getQuotes").get(getQuotes);
 router.route("/top").get(getTopAssets);
 router.route("/findById/:id").get(getAssetById);
 router.route("/currency/:ticker").get(getCurrencyRate);
