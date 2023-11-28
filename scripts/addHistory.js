@@ -55,6 +55,7 @@ const addHistory = async () => {
           if (historyItemYear === year && historyItemMonth === month) {
             monthExists = true;
             // Update history with the latest info
+            history.date = currentDate;
             history.worth = portfolioCalculations.value;
             history.expenses = portfolioCalculations.expense;
             history.yield = portfolioCalculations.portfolioYield;
