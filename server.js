@@ -45,6 +45,6 @@ app.use("/api/users", userRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-getQuotes();
+// getQuotes();
 addHistory();
-setInterval(getQuotes, 300000);
+// setInterval(getQuotes, 300000);

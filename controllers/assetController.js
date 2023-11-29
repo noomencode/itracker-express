@@ -103,36 +103,68 @@ const getSingleQuote = asyncHandler(async (req, res) => {
 // @Route   Currently not a API route
 // @access  Private
 
+// const getQuotes = asyncHandler(async (req, res) => {
+//   const assets = await Asset.find({});
+
+//   assets.map(async (asset) => {
+//     try {
+//       const result = await yahooFinance.quote(asset.ticker);
+//       //Add price in EUR for USD and SEK assets.
+//       const updatedResult = await calculatePrices(result);
+
+//       const updatedItem = await Asset.findOneAndUpdate(
+//         { ticker: asset.ticker },
+//         assetItem(updatedResult)
+//       );
+//       if (updatedItem) {
+//         console.log(
+//           `${asset.ticker} updated! New price: ${result.regularMarketPrice}, previous day price: ${result.regularMarketPreviousClose}`
+//         );
+//       } else {
+//         console.log("Invalid asset data");
+//       }
+//     } catch (error) {
+//       console.warn(
+//         `Skipping yf.quote("${asset.ticker}"): [${error.name}] ${error.message}`
+//       );
+//       res.status(503);
+//       return;
+//     }
+//   });
+// });
+
 const getQuotes = asyncHandler(async (req, res) => {
-  const assets = await Asset.find({});
+  try {
+    const assets = await Asset.find({});
+    const promises = assets.map(async (asset) => {
+      try {
+        const result = await yahooFinance.quote(asset.ticker);
+        const updatedResult = await calculatePrices(result);
 
-  assets.map(async (asset) => {
-    try {
-      const result = await yahooFinance.quote(asset.ticker);
-      //Add price in EUR for USD and SEK assets.
-      const updatedResult = await calculatePrices(result);
-
-      const updatedItem = await Asset.findOneAndUpdate(
-        { ticker: asset.ticker },
-        assetItem(updatedResult)
-      );
-      if (updatedItem) {
-        console.log(
-          `${asset.ticker} updated! New price: ${result.regularMarketPrice}, previous day price: ${result.regularMarketPreviousClose}`
+        const updatedItem = await Asset.findOneAndUpdate(
+          { ticker: asset.ticker },
+          assetItem(updatedResult)
         );
-        res.status(200);
-      } else {
-        console.log("Invalid asset data");
-        res.status(500);
+        if (updatedItem) {
+          console.log(
+            `${asset.ticker} updated! New price: ${result.regularMarketPrice}, previous day price: ${result.regularMarketPreviousClose}`
+          );
+        } else {
+          console.log("Invalid asset data");
+        }
+      } catch (error) {
+        console.warn(
+          `Skipping yf.quote("${asset.ticker}"): [${error.name}] ${error.message}`
+        );
       }
-    } catch (error) {
-      console.warn(
-        `Skipping yf.quote("${asset.ticker}"): [${error.name}] ${error.message}`
-      );
-      res.status(503);
-      return;
-    }
-  });
+    });
+
+    await Promise.all(promises);
+    res.status(200).json({ message: "Quotes updated successfully" });
+  } catch (error) {
+    console.error("Error fetching quotes:", error);
+    res.status(503).json({ error: "Failed to update quotes" });
+  }
 });
 
 //// @desc  Search for asset
