@@ -22,18 +22,18 @@ const transactionSchema = mongoose.Schema(
     },
     amount: {
       type: Number,
-      required: true,
     },
     expense: {
       type: Number,
-      required: true,
     },
     expenseInEur: {
       type: Number,
     },
     price: {
       type: Number,
-      required: true,
+    },
+    profit: {
+      type: Number,
     },
   },
   {

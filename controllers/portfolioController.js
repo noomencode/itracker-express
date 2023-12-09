@@ -148,14 +148,20 @@ const deleteAssetFromPortfolio = asyncHandler(async (req, res) => {
 // @access  Private
 
 const editPortfolioAsset = asyncHandler(async (req, res) => {
-  const { name, spent, spentInEur, sharesAmount, customType } = req.body;
+  const { name, spent, spentInEur, sharesAmount, customType, profit } =
+    req.body;
+  let newProfit = parseFloat(profit);
   const portfolio = await Portfolio.findOne({ user: req.user.id });
   const asset = await portfolio.assets.id(req.params.id);
+  if (asset.profit > 0 && newProfit > 0) {
+    newProfit = newProfit + asset.profit;
+  }
   asset.name = name ? name : asset.name;
   asset.spent = spent ? spent : asset.spent;
   asset.spentInEur = spentInEur ? spentInEur : asset.spentInEur;
   asset.sharesAmount = sharesAmount ? sharesAmount : asset.sharesAmount;
   asset.customType = customType ? customType : asset.customType;
+  asset.profit = newProfit ? newProfit : asset.profit;
 
   portfolio.save(function (err) {
     if (err) return console.log(err);

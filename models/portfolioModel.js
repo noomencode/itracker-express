@@ -68,6 +68,9 @@ const portfolioSchema = mongoose.Schema(
         customType: {
           type: String,
         },
+        profit: {
+          type: Number,
+        },
         asset: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Asset",

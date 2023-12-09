@@ -10,7 +10,8 @@ import yahooFinance from "yahoo-finance2";
 // @access  Private
 
 const addTransaction = asyncHandler(async (req, res) => {
-  const { ticker, date, type, amount, price, expense, expenseInEur } = req.body;
+  const { ticker, date, type, amount, price, profit, expense, expenseInEur } =
+    req.body;
   const asset = await Asset.findOne({ ticker: ticker });
   const portfolio = await Portfolio.findOne({
     user: req.user.id,
@@ -24,6 +25,7 @@ const addTransaction = asyncHandler(async (req, res) => {
       type: type,
       amount: amount,
       price: price,
+      profit: profit,
       expense: expense,
       expenseInEur: expenseInEur,
     });
@@ -113,6 +115,7 @@ const editTransaction = asyncHandler(async (req, res) => {
   transaction.type = type ? type : transaction.type;
   transaction.amount = sharesAmount ? sharesAmount : transaction.amount;
   transaction.price = price ? price : transaction.price;
+  transaction.profit = profit ? profit : transaction.profit;
   transaction.expense = expense ? expense : transaction.expense;
   transaction.expenseInEur = expenseInEur
     ? expenseInEur
