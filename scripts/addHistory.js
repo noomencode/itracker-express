@@ -16,11 +16,20 @@ const calculatePortfolio = async (portfolio) => {
     }
   }
   portfolioYield = ((value - expense) / expense) * 100;
-  if (p.history[0]) {
+  if (p.history.length) {
+    // const lastYearHistory = p.history[p.history.length - 2];
+    const currentYear = new Date().getFullYear();
+    const lastYearHistory = p.history
+      .filter((h) => h.year === currentYear - 1)
+      .slice(-1)[0];
+
+    //Annual yield calculation taken from https://taavi.golive.ee/investori-kasiraamat/kuidas-arvutada-tootlust/
     annualYield =
-      ((value - p.history[0]?.worth - (expense - p.history[0]?.expenses)) /
-        p.history[0].worth) *
+      ((value -
+        (lastYearHistory?.worth + (expense - lastYearHistory?.expenses))) /
+        (lastYearHistory.worth + (expense - lastYearHistory?.expenses))) *
       100;
+    console.log(annualYield);
   }
   const profit = value - expense;
 
