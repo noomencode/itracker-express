@@ -8,6 +8,14 @@ const portfolioSchema = mongoose.Schema(
       ref: "User",
       unique: true,
     },
+    performance: {
+      value: { type: Number },
+      valuePreviousClose: { type: Number },
+      expenses: { type: Number },
+      dividends: { type: Number },
+      valueWithCrypto: { type: Number },
+      expensesWithCrypto: { type: Number },
+    },
     history: [
       {
         date: {
