@@ -139,6 +139,7 @@ const getQuotes = asyncHandler(async (req, res) => {
     const promises = assets.map(async (asset) => {
       try {
         const result = await yahooFinance.quote(asset.ticker);
+        console.log(result);
         const updatedResult = await calculatePrices(result);
 
         const updatedItem = await Asset.findOneAndUpdate(

@@ -79,6 +79,9 @@ const assetSchema = mongoose.Schema(
     regularMarketTime: {
       type: Date,
     },
+    marketcap: {
+      type: Number,
+    },
   },
   {
     timestamps: true,

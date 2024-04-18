@@ -11,7 +11,7 @@ const getWatchlist = asyncHandler(async (req, res) => {
       user: req.user.id,
     }).populate("assets.asset");
     if (watchlist) {
-      if (watchlist[0].assets.length) {
+      if (watchlist[0]?.assets?.length) {
         res.json(watchlist);
       } else {
         res.status(400).json("No assets found in watchlist for user.");

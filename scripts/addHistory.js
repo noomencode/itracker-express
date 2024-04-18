@@ -20,6 +20,7 @@ const calculateCurrentPortfolio = async (portfolio) => {
     const asset = await Asset.findById(ass.asset);
     let prevPrice;
     if (asset.type !== "Cryptocurrency") {
+      // console.log(ass.name + " " + ass.spentInEur);
       value += ass.sharesAmount * asset.priceInEur;
       expense += ass.spentInEur;
       //Previous day value calc

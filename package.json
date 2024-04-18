@@ -31,7 +31,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.12.3",
-    "yahoo-finance2": "^2.4.1"
+    "yahoo-finance2": "^2.11.2"
   },
   "devDependencies": {
     "concurrently": "^7.0.0",

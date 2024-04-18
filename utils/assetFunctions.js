@@ -71,6 +71,7 @@ const assetItem = (result) => {
     regularMarketPreviousClose: result.regularMarketPreviousClose || null,
     regularMarketPreviousCloseInEur: result.regularMarketPreviousCloseInEur,
     regularMarketTime: result.regularMarketTime,
+    marketcap: result.marketcap,
   };
 };
 
