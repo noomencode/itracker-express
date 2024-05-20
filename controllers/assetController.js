@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import Asset from "../models/assetModel.js";
 import yahooFinance from "yahoo-finance2";
 import { region, calculatePrices, assetItem } from "../utils/assetFunctions.js";
-import { runCalculationsAndUpdatePortfolio } from "./scripts/addHistory.js";
+import { runCalculationsAndUpdatePortfolio } from "../scripts/addHistory.js";
 
 // @desc    Fetch all assets
 // @Route   GET /api/assets
