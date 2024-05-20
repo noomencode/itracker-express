@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import Asset from "../models/assetModel.js";
 import yahooFinance from "yahoo-finance2";
 import { region, calculatePrices, assetItem } from "../utils/assetFunctions.js";
+import { runCalculationsAndUpdatePortfolio } from "./scripts/addHistory.js";
 
 // @desc    Fetch all assets
 // @Route   GET /api/assets
@@ -153,6 +154,7 @@ const getQuotes = asyncHandler(async (req, res) => {
         } else {
           console.log("Invalid asset data");
         }
+        runCalculationsAndUpdatePortfolio();
       } catch (error) {
         console.warn(
           `Skipping yf.quote("${asset.ticker}"): [${error.name}] ${error.message}`
