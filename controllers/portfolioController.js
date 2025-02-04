@@ -76,7 +76,7 @@ const addPerformanceHistory = asyncHandler(async (req, res) => {
   portfolio.history.push(history);
   portfolio.save(function (err) {
     if (err) return console.log(err);
-    res.status(204).json(`Performance history added to portfolio.`);
+    res.status(201).json(`Performance history added to portfolio.`);
     console.log(portfolio);
   });
 });
@@ -139,7 +139,7 @@ const deleteAssetFromPortfolio = asyncHandler(async (req, res) => {
   });
   portfolio.save(function (err) {
     if (err) return console.log(err);
-    res.status(204).json(`Asset(s) deleted successfully from portfolio.`);
+    res.status(201).json(`Asset(s) deleted successfully from portfolio.`);
   });
 });
 
@@ -165,8 +165,59 @@ const editPortfolioAsset = asyncHandler(async (req, res) => {
 
   portfolio.save(function (err) {
     if (err) return console.log(err);
-    res.status(204).json(`Asset updated successfully`);
+    res.status(201).json(`Asset updated successfully`);
     console.log(asset);
+  });
+});
+
+// @desc    Add goals to portfolio
+// @Route   POST /api/portfolio/goals
+// @access  Private
+
+const addPortfolioGoals = asyncHandler(async (req, res) => {
+  const { year, valueGrowth, investments } = req.body;
+
+  const goals = {
+    year: year,
+    valueGrowth: valueGrowth,
+    investments: investments,
+  };
+
+  const portfolio = await Portfolio.findOneAndUpdate(
+    { user: req.user.id },
+    {
+      $push: {
+        goals: goals,
+      },
+    }
+  );
+  if (portfolio) {
+    res.status(201);
+    res.send(`Goals added to portfolio!`);
+  } else {
+    res.status(400);
+    throw new Error("Invalid portfolio data");
+  }
+});
+
+// @desc    Edit goals in portfolio
+// @Route   PUT /api/portfolio/goals
+// @access  Private
+
+const editPortfolioGoals = asyncHandler(async (req, res) => {
+  const { year, valueGrowth, investments } = req.body;
+  const portfolio = await Portfolio.findOne({
+    user: req.user.id,
+  });
+  const goal = await portfolio.goals.find((g) => g.year === year.toString());
+
+  goal.valueGrowth = valueGrowth ?? goal.valueGrowth;
+  goal.investments = investments ?? goal.investments;
+
+  portfolio.save(function (err) {
+    if (err) return console.log(err);
+    res.status(201).json(`Goals updated successfully`);
+    console.log(goal);
   });
 });
 
@@ -177,4 +228,6 @@ export {
   getPortfolio,
   deleteAssetFromPortfolio,
   editPortfolioAsset,
+  addPortfolioGoals,
+  editPortfolioGoals,
 };

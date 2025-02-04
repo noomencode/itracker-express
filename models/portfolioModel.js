@@ -95,6 +95,22 @@ const portfolioSchema = mongoose.Schema(
         },
       },
     ],
+    goals: [
+      {
+        year: {
+          type: String,
+          required: true,
+        },
+        valueGrowth: {
+          type: Number,
+          required: true,
+        },
+        investments: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

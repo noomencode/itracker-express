@@ -6,6 +6,8 @@ import {
   deleteAssetFromPortfolio,
   editPortfolioAsset,
   addPerformanceHistory,
+  addPortfolioGoals,
+  editPortfolioGoals,
 } from "../controllers/portfolioController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -17,4 +19,7 @@ router.route("/").put(protect, addPerformanceHistory);
 router.route("/assets").put(protect, addAssetToPortfolio);
 router.route("/assets/:id").put(protect, editPortfolioAsset);
 router.route("/assets").delete(protect, deleteAssetFromPortfolio);
+router.route("/goals").post(protect, addPortfolioGoals);
+router.route("/goals").put(protect, editPortfolioGoals);
+
 export default router;
