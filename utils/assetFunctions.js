@@ -1,4 +1,9 @@
-import yahooFinance from "yahoo-finance2";
+import YahooFinance from "yahoo-finance2";
+
+const yahooFinance = new YahooFinance({
+  ...options, // optional
+  suppressNotices: ["yahooSurvey"], // optional
+});
 
 const region = (result) => {
   if (

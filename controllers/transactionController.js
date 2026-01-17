@@ -3,11 +3,14 @@ import asyncHandler from "express-async-handler";
 import Asset from "../models/assetModel.js";
 import Transaction from "../models/transactionModel.js";
 import Portfolio from "../models/portfolioModel.js";
-import yahooFinance from "yahoo-finance2";
-
+import YahooFinance from "yahoo-finance2";
 // @desc    Add new transaction
 // @Route   PUT /api/transactions
 // @access  Private
+const yahooFinance = new YahooFinance({
+  ...options, // optional
+  suppressNotices: ["yahooSurvey"], // optional
+});
 
 const addTransaction = asyncHandler(async (req, res) => {
   const { ticker, date, type, amount, price, profit, expense, expenseInEur } =
