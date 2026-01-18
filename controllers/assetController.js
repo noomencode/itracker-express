@@ -4,10 +4,7 @@ import YahooFinance from "yahoo-finance2";
 import { region, calculatePrices, assetItem } from "../utils/assetFunctions.js";
 import { runCalculationsAndUpdatePortfolio } from "../scripts/addHistory.js";
 
-const yahooFinance = new YahooFinance({
-  ...options, // optional
-  suppressNotices: ["yahooSurvey"], // optional
-});
+const yahooFinance = new YahooFinance();
 // @desc    Fetch all assets
 // @Route   GET /api/assets
 // @access  Private

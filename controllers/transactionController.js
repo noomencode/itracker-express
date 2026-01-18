@@ -7,10 +7,7 @@ import YahooFinance from "yahoo-finance2";
 // @desc    Add new transaction
 // @Route   PUT /api/transactions
 // @access  Private
-const yahooFinance = new YahooFinance({
-  ...options, // optional
-  suppressNotices: ["yahooSurvey"], // optional
-});
+const yahooFinance = new YahooFinance();
 
 const addTransaction = asyncHandler(async (req, res) => {
   const { ticker, date, type, amount, price, profit, expense, expenseInEur } =
